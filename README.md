@@ -1,3 +1,41 @@
+# 🇰🇷 한국어 최적화 버전
+
+이 저장소는 한국어 사용자와 Windows 4K 고해상도 환경에 최적화된 수정 버전입니다.
+
+## 📋 주요 개선사항
+
+- ✅ **한국어 UI 지원** - 기본 언어 Korean/ko 설정
+- ✅ **4K 해상도 최적화** - 폰트 크기 및 UI 레이아웃 개선
+- ✅ **Windows DPI Awareness** - 고해상도 모니터 지원
+- ✅ **TMDB Bearer Token 지원** - API Key (v3) 및 Bearer Token (v4) 모두 지원
+- ✅ **ANSI 코드 제거** - 콘솔 출력 가독성 개선
+
+## 🚀 설치 방법
+
+### 1. Gemini SRT Translator (한국어 최적화 버전)
+```bash
+git clone git@github.com:workingdad365/gemini-srt-translator.git
+cd gemini-srt-translator
+pip install .
+```
+> 💡 **추천**: [한국어 번역 최적화 버전](https://github.com/workingdad365/gemini-srt-translator)을 함께 사용하면 더 나은 번역 품질을 얻을 수 있습니다.
+
+### 2. Gemini SRT Translator GUI (한국어/4K 최적화 버전)
+```bash
+git clone git@github.com:workingdad365/Gemini-SRT-translator-GUI.git
+cd Gemini-SRT-translator-GUI
+pip install .
+```
+
+### 3. 실행
+```bash
+gst-gui
+```
+
+---
+
+
+
 # 🎬 Gemini SRT Translator GUI
 
 A powerful GUI application for translating SRT subtitle files using Google's Gemini AI. This is a user-friendly graphical interface for the [Gemini SRT Translator](https://github.com/MaKTaiL/gemini-srt-translator) command-line tool, featuring automatic movie/TV series detection, TMDB integration for context, and intelligent batch processing.
