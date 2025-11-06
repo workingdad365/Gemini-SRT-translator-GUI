@@ -14,6 +14,8 @@ class TMDBHelper:
         self.logger = logger
         self.base_url = "https://api.themoviedb.org/3"
         self.session = requests.Session()
+        # Bearer Token인지 API Key인지 자동 감지
+        self.is_bearer_token = self._is_bearer_token(api_key)
 
     def log(self, message):
         """Log a message"""
@@ -21,6 +23,28 @@ class TMDBHelper:
             self.logger(message)
         else:
             print(message)
+
+    def _is_bearer_token(self, api_key):
+        """Bearer Token인지 API Key인지 판단"""
+        if not api_key:
+            return False
+        # Bearer Token은 JWT 형식 (점으로 구분된 3개 부분)
+        return api_key.count('.') == 2 and len(api_key) > 100
+
+    def _prepare_request(self, params=None):
+        """API Key 또는 Bearer Token 방식으로 요청 준비"""
+        if params is None:
+            params = {}
+        
+        headers = {}
+        if self.is_bearer_token:
+            # Bearer Token 방식
+            headers['Authorization'] = f'Bearer {self.api_key}'
+        else:
+            # API Key 방식
+            params['api_key'] = self.api_key
+        
+        return params, headers
 
     def search_title(self, title, is_series, year=None, limit=5):
         """
@@ -47,7 +71,6 @@ class TMDBHelper:
         try:
             # Prepare search parameters
             params = {
-                'api_key': self.api_key,
                 'query': title.strip(),
                 'language': 'en-US',
                 'include_adult': 'false'
@@ -82,7 +105,9 @@ class TMDBHelper:
             else:
                 url = f"{self.base_url}/search/movie"
 
-            response = self.session.get(url, params=params, timeout=10)
+            # API Key 또는 Bearer Token 방식으로 요청 준비
+            params, headers = self._prepare_request(params)
+            response = self.session.get(url, params=params, headers=headers, timeout=10)
             response.raise_for_status()
 
             data = response.json()
@@ -159,12 +184,14 @@ class TMDBHelper:
 
         try:
             params = {
-                'api_key': self.api_key,
                 'language': 'en-US'
             }
 
+            # API Key 또는 Bearer Token 방식으로 요청 준비
+            params, headers = self._prepare_request(params)
+            
             url = f"{self.base_url}/movie/{movie_id}"
-            response = self.session.get(url, params=params, timeout=10)
+            response = self.session.get(url, params=params, headers=headers, timeout=10)
             response.raise_for_status()
 
             movie = response.json()
@@ -257,15 +284,18 @@ class TMDBHelper:
             return False
 
         try:
-            params = {'api_key': self.api_key}
+            # API Key 또는 Bearer Token 방식으로 요청 준비
+            params, headers = self._prepare_request({})
             url = f"{self.base_url}/configuration"
-            response = self.session.get(url, params=params, timeout=5)
+            response = self.session.get(url, params=params, headers=headers, timeout=5)
 
             if response.status_code == 200:
-                self.log("✅ TMDB API key is valid")
+                token_type = "Bearer Token" if self.is_bearer_token else "API Key"
+                self.log(f"✅ TMDB {token_type} is valid")
                 return True
             elif response.status_code == 401:
-                self.log("❌ TMDB API key is invalid")
+                token_type = "Bearer Token" if self.is_bearer_token else "API Key"
+                self.log(f"❌ TMDB {token_type} is invalid")
                 return False
             else:
                 self.log(f"⚠️ TMDB API returned status code: {response.status_code}")

@@ -228,7 +228,7 @@ class DragDropGUI:
     def _create_treeview(self):
         """Create the TreeView for file pairs"""
         # TreeView section label with reduced margins
-        treeview_label = ctk.CTkLabel(self.main_frame, text="Found files:", font=ctk.CTkFont(size=14, weight="bold"))
+        treeview_label = ctk.CTkLabel(self.main_frame, text="Found files:", font=ctk.CTkFont(size=18, weight="bold"))
         treeview_label.pack(anchor="w", pady=(0, 5))  # Reduced from (0, 10) to (0, 5)
 
         # Frame for TreeView (still using tkinter TreeView as CustomTkinter doesn't have equivalent)
@@ -304,7 +304,8 @@ class DragDropGUI:
                        fieldbackground="#2b2b2b",      # Dark field background
                        borderwidth=0,                  # No borders
                        relief="flat",                  # Flat appearance
-                       rowheight=25)                   # Row height
+                       rowheight=40,                   # Row height
+                       font=('Arial', 14))             # Cell font
 
         # Configure TreeView headings
         style.configure("Dark.Treeview.Heading",
@@ -312,7 +313,7 @@ class DragDropGUI:
                        foreground="#ffffff",           # White text
                        borderwidth=1,                  # Thin border
                        relief="solid",                 # Solid border style
-                       font=('Arial', 9, 'bold'))      # Bold font
+                       font=('Arial', 16, 'bold'))     # Bold font
 
         # Configure selection and hover effects
         style.map("Dark.Treeview",
@@ -390,11 +391,11 @@ class DragDropGUI:
 
     def _create_console(self):
         """Create the console output area"""
-        console_label = ctk.CTkLabel(self.main_frame, text="Console output:", font=ctk.CTkFont(size=14, weight="bold"))
+        console_label = ctk.CTkLabel(self.main_frame, text="Console output:", font=ctk.CTkFont(size=20, weight="bold"))
         console_label.pack(anchor="w", pady=(0, 5))  # Reduced from (0, 10) to (0, 5)
 
-        # Console frame - made 50% shorter with fixed height
-        self.console_frame = ctk.CTkFrame(self.main_frame, height=150)  # Fixed height to make it 50% shorter
+        # Console frame - increased height for better visibility
+        self.console_frame = ctk.CTkFrame(self.main_frame, height=300)  # Increased height (2x)
         self.console_frame.pack(fill="x", pady=(0, 10))  # Reduced from (0, 20) to (0, 10)
         self.console_frame.pack_propagate(False)  # Prevent frame from shrinking
 
@@ -408,13 +409,13 @@ class DragDropGUI:
         self.console_container = tk.Frame(self.console_frame, bg=bg_color)
         self.console_container.pack(fill="both", expand=True, padx=10, pady=10)
 
-        # Console text widget - reduced height from 12 to 6 lines
+        # Console text widget - increased height for better visibility
         self.console_text = scrolledtext.ScrolledText(
             self.console_container,
-            height=6,  # Reduced from 12 to 6 lines (50% shorter)
+            height=12,  # Increased from 6 to 12 lines (2x)
             bg='#2b2b2b',
             fg='#ffffff',
-            font=('Consolas', 10),
+            font=('Consolas', 20),
             insertbackground='white'
         )
         self.console_text.pack(fill="both", expand=True)

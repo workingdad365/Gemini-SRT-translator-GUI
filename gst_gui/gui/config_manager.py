@@ -18,13 +18,13 @@ class ConfigManager:
         self.config = {}
         self._default_config = {
             'gemini_api_key': '',
-            'model': 'gemini-2.0-flash',
+            'model': 'gemini-2.5-flash',
             'tmdb_api_key': '',
             'tmdb_id': '',
             'api_expanded': False,
             'settings_expanded': False,
-            'language': 'Polish',
-            'language_code': 'pl',
+            'language': 'Korean',
+            'language_code': 'ko',
             'extract_audio': False,
             'auto_fetch_tmdb': True,
             'is_tv_series': False
@@ -120,10 +120,10 @@ class ConfigManager:
     def get_processing_config(self):
         """Get processing-related configuration"""
         return {
-            'language': self.get('language', 'Polish'),
+            'language': self.get('language', 'Korean'),
             'extract_audio': self.get('extract_audio', False),
             'auto_fetch_tmdb': self.get('auto_fetch_tmdb', True),
-            'language_code': self.get('language_code', True),
+            'language_code': self.get('language_code', 'ko'),
             'tmdb_id': self.get('tmdb_id', '')
         }
 
@@ -146,7 +146,7 @@ class ConfigManager:
             'has_gemini_key': self.has_gemini_api_key(),
             'has_tmdb_key': self.has_tmdb_api_key(),
             'has_tmdb_id': self.has_tmdb_id(),
-            'language': self.get('language', 'Polish'),
+            'language': self.get('language', 'Korean'),
             'extract_audio': self.get('extract_audio', False),
             'auto_fetch_tmdb': self.get('auto_fetch_tmdb', True),
             'config_location': str(self.config_file)

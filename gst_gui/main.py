@@ -177,6 +177,21 @@ def main():
     print("🚀 Starting CLI Wrapper GUI...")
     print("=" * 50)
 
+    # Windows DPI awareness 설정
+    if sys.platform.startswith('win'):
+        try:
+            from ctypes import windll
+            windll.shcore.SetProcessDpiAwareness(1)  # System DPI aware
+            print("✅ Windows DPI awareness enabled")
+        except Exception:
+            try:
+                # Fallback for older Windows
+                from ctypes import windll
+                windll.user32.SetProcessDPIAware()
+                print("✅ Windows DPI aware (legacy mode)")
+            except Exception:
+                pass
+
     # Setup Python path
     setup_python_path()
 

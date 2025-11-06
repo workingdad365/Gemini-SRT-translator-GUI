@@ -4,6 +4,7 @@ Handles process management and output streaming.
 """
 import datetime
 import os
+import re
 import subprocess
 import sys
 import traceback
@@ -18,6 +19,8 @@ class CLIRunner:
     def __init__(self, logger=None):
         self.logger = logger
         self.gst_cmd = self._find_gst_command()
+        # ANSI escape code 제거를 위한 정규표현식
+        self.ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
     def _find_gst_command(self):
         """Find the gst command executable"""
@@ -436,6 +439,8 @@ class CLIRunner:
                         break
 
                     output_line = line.rstrip()
+                    # ANSI escape code 제거
+                    output_line = self.ansi_escape.sub('', output_line)
                     if output_line:  # Only log non-empty lines
                         self.log(f"   {output_line}")
 
@@ -518,7 +523,10 @@ class CLIRunner:
 
             # Read output in real-time
             for line in process.stdout:
-                self.log(line.rstrip())
+                # ANSI escape code 제거
+                clean_line = self.ansi_escape.sub('', line.rstrip())
+                if clean_line:  # Only log non-empty lines
+                    self.log(clean_line)
 
             # Wait for completion
             return_code = process.wait()
