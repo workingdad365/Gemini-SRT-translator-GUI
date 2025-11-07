@@ -415,7 +415,7 @@ class DragDropGUI:
             height=12,  # Increased from 6 to 12 lines (2x)
             bg='#2b2b2b',
             fg='#ffffff',
-            font=('Consolas', 20),
+            font=('Consolas', 14),
             insertbackground='white'
         )
         self.console_text.pack(fill="both", expand=True)
