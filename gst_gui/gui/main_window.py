@@ -552,14 +552,23 @@ class DragDropGUI:
         self.tv_series_check = ctk.CTkCheckBox(row2_frame, text="TV Series", variable=self.is_tv_series)
         self.tv_series_check.pack(side="left", padx=(10, 0))
 
-        # Row 3: Overview
+        # Row 3: Overview (multiline)
         row3_frame = ctk.CTkFrame(self.settings_options_frame)
         row3_frame.pack(fill="x", padx=10, pady=(5, 5))
 
-        ctk.CTkLabel(row3_frame, text="Overview:").pack(side="left", padx=(10, 5))
-        self.overview = tk.StringVar(value='')
-        self.overview_entry = ctk.CTkEntry(row3_frame, textvariable=self.overview, width=500)
-        self.overview_entry.pack(side="left", padx=(0, 10), fill="x", expand=True)
+        # Label at the top
+        overview_label_frame = ctk.CTkFrame(row3_frame)
+        overview_label_frame.pack(fill="x", padx=(10, 10), pady=(5, 0))
+        ctk.CTkLabel(overview_label_frame, text="Overview:").pack(side="left")
+
+        # Multiline text box
+        self.overview_textbox = ctk.CTkTextbox(
+            row3_frame, 
+            height=100,  # 5 lines 정도
+            width=500,
+            wrap="word"
+        )
+        self.overview_textbox.pack(side="left", padx=(10, 10), pady=(5, 10), fill="both", expand=True)
 
         # Row 4: Auto-fetch and Add translator info
         row4_frame = ctk.CTkFrame(self.settings_options_frame)
@@ -634,7 +643,7 @@ class DragDropGUI:
             'language': self.language.get(),
             'language_code': self.language_code.get() if hasattr(self, 'language_code') else 'pl',
             'extract_audio': self.extract_audio.get(),
-            'overview': self.overview.get() if hasattr(self, 'overview') else '',
+            'overview': self.overview_textbox.get("1.0", "end-1c") if hasattr(self, 'overview_textbox') else '',
             'movie_title': self._get_movie_title_from_treeview(),
             'is_tv_series': self.is_tv_series.get() if hasattr(self, 'is_tv_series') else False,
             'add_translator_info': self.add_translator_info.get() if hasattr(self, 'add_translator_info') else True
@@ -1065,7 +1074,7 @@ class DragDropGUI:
             self.tree.delete(item)
 
         # Clear TMDB fields when starting fresh with new content
-        if hasattr(self, 'overview'):
+        if hasattr(self, 'overview_textbox'):
             self._clear_overview_field()
         if hasattr(self, 'tmdb_id'):
             self.tmdb_id.set('')  # Clear TMDB ID for new movie
@@ -1517,13 +1526,14 @@ class DragDropGUI:
 
     def _update_overview_field(self, overview_text):
         """Update the overview entry field"""
-        if hasattr(self, 'overview'):
-            self.overview.set(overview_text or '')
+        if hasattr(self, 'overview_textbox'):
+            self.overview_textbox.delete("1.0", "end")
+            self.overview_textbox.insert("1.0", overview_text or '')
 
     def _clear_overview_field(self):
         """Clear the overview entry field"""
-        if hasattr(self, 'overview'):
-            self.overview.set('')
+        if hasattr(self, 'overview_textbox'):
+            self.overview_textbox.delete("1.0", "end")
 
     def _update_tmdb_id_field(self, movie, silent=False):
         """Update TMDB ID field with found movie (runs in main thread)"""
