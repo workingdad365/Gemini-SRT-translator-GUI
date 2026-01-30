@@ -29,7 +29,7 @@ pip install .
 
 ### 3. 실행
 ```bash
-gst-gui
+gst_gui
 ```
 
 ---
