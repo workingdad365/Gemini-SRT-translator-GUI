@@ -12,19 +12,26 @@
 
 ## 🚀 설치 방법
 
-### 1. Gemini SRT Translator (한국어 최적화 버전)
+### 0. pipx 설치 (전역 명령 + 의존성 격리)
+```bash
+python -m pip install --user pipx
+python -m pipx ensurepath
+```
+> 터미널을 다시 열어 PATH 반영 후 다음 단계를 진행하세요.
+
+### 1. Gemini SRT Translator 설치 (한국어 최적화 버전)
 ```bash
 git clone git@github.com:workingdad365/gemini-srt-translator.git
 cd gemini-srt-translator
-pip install .
+pipx install .
 ```
 > 💡 **추천**: [한국어 번역 최적화 버전](https://github.com/workingdad365/gemini-srt-translator)을 함께 사용하면 더 나은 번역 품질을 얻을 수 있습니다.
 
-### 2. Gemini SRT Translator GUI (한국어/4K 최적화 버전)
+### 2. Gemini SRT Translator GUI 설치 (한국어/4K 최적화 버전)
 ```bash
 git clone git@github.com:workingdad365/Gemini-SRT-translator-GUI.git
 cd Gemini-SRT-translator-GUI
-pip install .
+pipx install .
 ```
 
 ### 3. 실행
@@ -67,12 +74,14 @@ A powerful GUI application for translating SRT subtitle files using Google's Gem
 ## 🛠️ Installation
 
 ```bash
-pip install git+https://github.com/mkaflowski/Gemini-SRT-translator-GUI.git
+python -m pip install --user pipx
+python -m pipx ensurepath
+pipx install git+https://github.com/mkaflowski/Gemini-SRT-translator-GUI.git
 gst_gui
 ```
 For update use:
 ```bash
-pip install --upgrade git+https://github.com/mkaflowski/Gemini-SRT-translator-GUI.git
+pipx upgrade gst_gui
 ```
 
 ### Prerequisites
